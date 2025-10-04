@@ -17,7 +17,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
+def redirect(request):
+    from django.shortcuts import redirect
+    return redirect('/checker', permanent=True)
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('checker/', include("serverchecker.urls"))
+    path('checker/', include("serverchecker.urls")),
+    path('', redirect, name="main redirect")
 ]
