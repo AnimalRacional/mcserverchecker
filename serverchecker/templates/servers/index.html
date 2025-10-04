@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Server List</title>
+</head>
+<body>
+    {% if servers %}
+        <ul>
+            {% for server in servers %}
+                <li><a href="/checker/server/{{ server.ip }}">{{ server.ip }}</a></li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No servers available.</p>
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if server %}{{ server.ip }}{% endif %} on mcserverchecker</title>
+    {% load static %}
+    <script src="{% static 'serverchecker/mctohtml.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'serverchecker/server.css' %}" />
+</head>
+<body>
+    {% if server %}
+    <div class="server" id="server_checker_server_{{ server.ip }}">
+        <h1>{{server.ip}}</h1>
+        <p>{{ server.ip }} for {% if server.mc_bedrock == True %}Bedrock Edition{% else %}Java Edition{% endif %} {{ server.mc_version }}</p>
+        <p>Last checked at {{ server.last_checked }} (GMT)</p>
+        <p>{{ server.mc_latency }}ms ping to this server</p>
+        <p>Online Players: {{ server.player_count }}/{{ server.max_players }}</p>
+        <ul>
+            {% for p in server.online_players %}
+                <li>{{ p }}</li>
+            {% endfor %}
+        </ul>
+        <h3>motd</h3>
+        <div class="motd" id="{{ server.ip }}_motd"> {{ server.mc_motd }}</div>
+        <script>
+            const id = '{{server.ip}}_motd';
+            console.log("id is", id)
+            initParser(id, id)
+        </script>
+        <img src="{{ server.mc_favicon }}" width=128 height=128 />
+        {% if server.mc_bedrock == True %}
+            <p>Bedrock Edition Server</p>
+        {% else %}
+            <p>Java Edition Server</p>
+        {% endif %}
+        <h3>Player History:</h3>
+        <ul>
+        {% for p in server.player_history %}
+            <li>{{ p }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+</body>
+</html>

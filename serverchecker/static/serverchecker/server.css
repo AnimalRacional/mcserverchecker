@@ -1,0 +1,18 @@
+body {
+    float: left;
+}
+
+@font-face {
+    font-family: 'Mcfont';
+    src: url(./Monocraft.ttf);
+}
+
+.motd {
+    margin-top: 3px;
+    margin-bottom: 10px;
+    border: solid 1px black;
+    background-color: brown;
+    font-family: 'Mcfont';
+    background-image: url('./motdbackground.png');
+    color: white;
+}
