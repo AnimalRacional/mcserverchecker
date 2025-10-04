@@ -13,6 +13,11 @@
     <div class="server" id="server_checker_server_{{ server.ip }}">
         <h1>{{server.ip}}</h1>
         <p>{{ server.ip }} for {% if server.mc_bedrock == True %}Bedrock Edition{% else %}Java Edition{% endif %} {{ server.mc_version }}</p>
+        {% if server.last_check_result == True %}
+            <p style="color:darkgreen">This server is online!</p>
+        {% else %}
+            <p style="color:red">This server is offline!</p>
+        {% endif %}
         <p>Last checked at {{ server.last_checked }} (UTC)</p>
         <p>{{ server.mc_latency }}ms ping to this server</p>
         <p>Online Players: {{ server.player_count }}/{{ server.max_players }}</p>

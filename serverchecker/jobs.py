@@ -25,10 +25,12 @@ def update_server(server: TrackedServer) -> bool:
         if isinstance(status.icon, str):
             server.mc_favicon = status.icon
         server.last_checked = timezone.make_aware(datetime.datetime.now(), timezone.get_current_timezone())
+        server.last_check_result = True
         print(f"Finished updating {server.ip}!")
         return True
     except ConnectionRefusedError:
         print(f"Couldn't connect to {server.ip}!")
+        server.last_check_result = False
         server.last_checked = timezone.make_aware(datetime.datetime.now(), timezone.get_current_timezone())
         return False
 
