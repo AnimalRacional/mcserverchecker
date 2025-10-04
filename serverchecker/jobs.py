@@ -6,7 +6,7 @@ from django.utils import timezone
 import datetime
 import mcstatus
 
-def update_server(server: TrackedServer):
+def update_server(server: TrackedServer) -> bool:
     try:
         js = mcstatus.JavaServer.lookup(server.ip)
         status = js.status()
@@ -25,12 +25,12 @@ def update_server(server: TrackedServer):
         if isinstance(status.icon, str):
             server.mc_favicon = status.icon
         server.last_checked = timezone.make_aware(datetime.datetime.now(), timezone.get_current_timezone())
-        server.save()
         print(f"Finished updating {server.ip}!")
+        return True
     except ConnectionRefusedError:
         print(f"Couldn't connect to {server.ip}!")
         server.last_checked = timezone.make_aware(datetime.datetime.now(), timezone.get_current_timezone())
-        server.save()
+        return False
 
 def check_servers():
     servers = TrackedServer.objects.order_by("last_checked")[:10]
@@ -38,6 +38,7 @@ def check_servers():
     for i in servers:
         print(f"Checking {i.ip}, last checked at {i.last_checked}")
         update_server(i)
+        i.save()
 
 
 
