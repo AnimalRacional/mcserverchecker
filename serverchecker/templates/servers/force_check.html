@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forcing {{ ip }}</title>
+</head>
+<body>
+    {% if ip %}
+        <h1>Forced update for {{ ip }}</h1>
+        {% if update_result == True %}
+            <p>Successfully updated server!</p>
+        {% else %}
+            <p style="color:darkred">Couldn't update server!</p>
+        {% endif %}
+        <a href={% url 'server check' ip=ip %}>Go back</a>
+    {% endif %}
+</body>
+</html>

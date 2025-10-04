@@ -33,7 +33,7 @@ else:
 # SECURITY WARNING: don't run with debug turned on in production!
 if "mcserverchecker_debug" in os.environ:
     DEBUG = os.environ["mcserverchecker_debug"] == "true"
-    print(f"DEBUG VARIABLE SET: {DEBUG}")
+    print(f"DEBUG VARIABLE SET: '{os.environ["mcserverchecker_debug"]}' = {DEBUG}")
 else:
     DEBUG = False
 

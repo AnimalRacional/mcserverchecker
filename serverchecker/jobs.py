@@ -10,14 +10,14 @@ def update_server(server: TrackedServer) -> bool:
     try:
         js = mcstatus.JavaServer.lookup(server.ip)
         status = js.status()
-        for p in server.online_players:
-            if not p in server.player_history:
-                server.player_history.append(p)
         server.max_players = status.players.max
         server.player_count = status.players.online
         if(isinstance(status.players.sample, list)):
             server.online_players = [p.name for p in status.players.sample]
             print(f"Online players: {server.online_players}")
+        for p in server.online_players:
+            if not p in server.player_history:
+                server.player_history.append(p)
         server.mc_version = status.version.name
         server.mc_motd = status.motd.raw.__str__()
         server.mc_bedrock = status.motd.bedrock
