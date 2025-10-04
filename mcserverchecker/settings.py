@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,15 +23,29 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-f@m^-&c1pqzillbr)mx-rflaae41vulv9*i425^f7d6fcu55-p'
+if "mcserverchecker_secretkey" in os.environ:
+    SECRET_KEY = os.environ["mcserverchecker_secretkey"]
+else:
+    SECRET_KEY = 'django-insecure-f@m^-&c1pqzillbr)mx-rflaae41vulv9*i425^f7d6fcu55-p'
+    print("USING INSECURE SECRET KEY!")
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+if "mcserverchecker_debug" in os.environ:
+    DEBUG = os.environ["mcserverchecker_debug"] == "true"
+    print(f"DEBUG VARIABLE SET: {DEBUG}")
+else:
+    DEBUG = False
 
-ALLOWED_HOSTS = [
-    '192.168.1.200',
-    'localhost'
-]
+if "mcserverchecker_allowedhosts" in os.environ:
+    import json
+    ALLOWED_HOSTS = json.loads(os.environ["mcserverchecker_allowedhosts"])
+    print(f"Allowed Hosts: {ALLOWED_HOSTS}")
+else:
+    ALLOWED_HOSTS = [
+        'localhost',
+        '127.0.0.1'
+    ]
 
 
 # Application definition
