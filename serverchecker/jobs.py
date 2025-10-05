@@ -33,6 +33,13 @@ def update_server(server: TrackedServer) -> bool:
         server.last_check_result = False
         server.last_checked = timezone.make_aware(datetime.datetime.now(), timezone.get_current_timezone())
         return False
+    except Exception as e:
+        print(f"Unhandled exception when checking {server.ip}")
+        print(f"Exception: {type(e)}")
+        print(f"Exception args: {e.args}")
+        print(f"Exception msg: {e}")
+        return False
+    
 
 def check_servers():
     servers = TrackedServer.objects.order_by("last_checked")[:10]

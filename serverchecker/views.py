@@ -5,7 +5,7 @@ from .models import TrackedServer
 
 # Create your views here.
 def index(request):
-    servers = TrackedServer.objects.order_by("-last_checked")[:10]
+    servers = TrackedServer.objects.order_by("-last_checked")
     context = { "servers": servers }
     return render(request, "servers/index.html", context)
 
