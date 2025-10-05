@@ -58,5 +58,8 @@ def start_scheduler():
     return cease_run
 
 def schedule_jobs():
-    schedule.every(10).seconds.do(check_servers)
+    from os import environ
+    delay = int(environ.get("mcserverchecker_checkdelay", 60))
+    schedule.every(delay).seconds.do(check_servers)
+    print(f"Scheduled server checking for every {delay} seconds")
 
