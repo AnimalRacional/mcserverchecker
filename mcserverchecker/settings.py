@@ -47,6 +47,10 @@ else:
         '127.0.0.1'
     ]
 
+if "mcserverchecker_csrftrust" in os.environ:
+    CSRF_TRUSTED_ORIGINS = os.environ["mcserverchecker_csrftrust"]
+    print(f"Allowed Origins: {CSRF_TRUSTED_ORIGINS}")
+
 
 # Application definition
 
@@ -93,6 +97,8 @@ WSGI_APPLICATION = 'mcserverchecker.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+print(f"BASE_DIR: {BASE_DIR}")
+print(f"DB WILL BE {BASE_DIR / 'db.sqlite3'}")
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
