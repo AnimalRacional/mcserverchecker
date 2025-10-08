@@ -48,7 +48,7 @@ else:
     ]
 
 if "mcserverchecker_csrftrust" in os.environ:
-    CSRF_TRUSTED_ORIGINS = os.environ["mcserverchecker_csrftrust"]
+    CSRF_TRUSTED_ORIGINS = os.environ["mcserverchecker_csrftrust"].split(' ')
     print(f"Allowed Origins: {CSRF_TRUSTED_ORIGINS}")
 
 

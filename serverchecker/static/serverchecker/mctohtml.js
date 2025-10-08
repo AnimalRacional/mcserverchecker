@@ -96,10 +96,8 @@ function parseStyle(string) {
                 i++;
                 indexDelta = indexes[i + 1] - indexes[i];
             }
-            apply.push ( codes[i] );
-        } else {
-            apply.push( codes[i] );
         }
+        apply.push( codes[i] );
         if( apply.lastIndexOf('§r') > -1) {
             apply = apply.slice( apply.lastIndexOf('§r') + 1 );
         }
