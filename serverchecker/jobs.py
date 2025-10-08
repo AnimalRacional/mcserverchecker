@@ -1,3 +1,4 @@
+import traceback
 import schedule
 import threading
 import time
@@ -5,6 +6,8 @@ from .models import TrackedServer
 from django.utils import timezone
 import datetime
 import mcstatus
+
+stop_scheduler_event = None
 
 def update_server(server: TrackedServer) -> bool:
     try:
@@ -14,7 +17,7 @@ def update_server(server: TrackedServer) -> bool:
         server.player_count = status.players.online
         if(isinstance(status.players.sample, list)):
             server.online_players = [p.name for p in status.players.sample]
-            print(f"Online players: {server.online_players}")
+            #print(f"Online players: {server.online_players}")
         for p in server.online_players:
             if not p in server.player_history:
                 server.player_history.append(p)
@@ -35,9 +38,7 @@ def update_server(server: TrackedServer) -> bool:
         return False
     except Exception as e:
         print(f"Unhandled exception when checking {server.ip}")
-        print(f"Exception: {type(e)}")
-        print(f"Exception args: {e.args}")
-        print(f"Exception msg: {e}")
+        print(traceback.format_exc())
         return False
     
 
@@ -45,11 +46,20 @@ def check_servers():
     servers = TrackedServer.objects.order_by("last_checked")[:10]
     print(f"Checking servers! It's currently {datetime.datetime.now()}")
     for i in servers:
-        print(f"Checking {i.ip}, last checked at {i.last_checked}")
+        # print(f"Checking {i.ip}, last checked at {i.last_checked}")
         update_server(i)
         i.save()
 
-
+def start_jobs():
+    global stop_scheduler_event
+    if stop_scheduler_event == None:
+        schedule_jobs()
+        stop_scheduler_event = start_scheduler()
+    else:
+        schedule.clear()
+        schedule_jobs()
+        stop_scheduler_event.set()
+        stop_scheduler_event = start_scheduler()
 
 def start_scheduler():
     print("Starting scheduler!")
@@ -59,7 +69,6 @@ def start_scheduler():
             while not cease_run.is_set():
                 schedule.run_pending()
                 time.sleep(1)
-    
     schedule_thread = ScheduleThread()
     schedule_thread.start()
     return cease_run
@@ -70,3 +79,14 @@ def schedule_jobs():
     schedule.every(delay).seconds.do(check_servers)
     print(f"Scheduled server checking for every {delay} seconds")
 
+def jobs_running():
+    global stop_scheduler_event
+    print(f"event: {stop_scheduler_event}")
+    return stop_scheduler_event != None
+
+def cancel_jobs():
+    schedule.clear()
+    global stop_scheduler_event
+    if stop_scheduler_event != None:
+        stop_scheduler_event.set()
+    stop_scheduler_event = None

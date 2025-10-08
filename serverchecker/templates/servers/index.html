@@ -15,5 +15,9 @@
     {% else %}
         <p>No servers available.</p>
     {% endif %}
+    {% if admin %}
+        <a href="/admin">Admin page</a><br>
+        <a href="/checker/scheduler_state">Scheduler State</a>
+    {% endif %}
 </body>
 </html>
