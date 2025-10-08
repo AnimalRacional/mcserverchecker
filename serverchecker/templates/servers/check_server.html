@@ -10,6 +10,7 @@
 </head>
 <body>
     {% if server %}
+    {% autoescape on %}
     <div class="server" id="server_checker_server_{{ server.ip }}">
         <h1>{{server.ip}}</h1>
         <p>{{ server.ip }} for {% if server.mc_bedrock == True %}Bedrock Edition{% else %}Java Edition{% endif %} {{ server.mc_version }}</p>
@@ -27,7 +28,7 @@
             {% endfor %}
         </ul>
         <h3>motd</h3>
-        <div class="motd" id="{{ server.ip }}_motd"> {{ server.mc_motd }}</div>
+        <div class="motd" id="{{ server.ip }}_motd"> {{ server.mc_motd }} </div>
         <script>
             const id = '{{server.ip}}_motd';
             console.log("id is", id)
@@ -48,6 +49,7 @@
         {% if admin == True %}
             <a href={% url 'force server check' ip=server.ip %}>Force server check</a>
         {% endif %}
+    {% endautoescape %}
     </div>
     {% endif %}
 </body>

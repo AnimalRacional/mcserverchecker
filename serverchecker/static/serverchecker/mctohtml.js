@@ -89,7 +89,7 @@ function parseStyle(string) {
         final.appendChild( applyCode( string.substring(0, indexes[0]), [] ) );
     }
     for(i = 0; i < len; i++) {
-    	indexDelta = indexes[i + 1] - indexes[i];
+        indexDelta = indexes[i + 1] - indexes[i];
         if(indexDelta === 2) {
             while(indexDelta === 2) {
                 apply.push ( codes[i] );
@@ -117,7 +117,7 @@ function initParser(input, output) {
     clearObfuscators();
     var input = document.getElementById(input),
         output = document.getElementById(output),
-        parsed = parseStyle( input.textContent );
+        parsed = parseStyle( input.innerHTML );
     output.innerHTML = '';
     output.appendChild(parsed);
 }
