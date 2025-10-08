@@ -26,9 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 if "mcserverchecker_secretkey" in os.environ:
     SECRET_KEY = os.environ["mcserverchecker_secretkey"]
 else:
-    SECRET_KEY = 'django-insecure-f@m^-&c1pqzillbr)mx-rflaae41vulv9*i425^f7d6fcu55-p'
-    print("USING INSECURE SECRET KEY!")
-
+    raise Exception("No secret key set")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 if "mcserverchecker_debug" in os.environ:
