@@ -17,6 +17,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    env:
+      mcserverchecker_secretkey: ${{ secrets.MCSERVERCHECKER_SECRETKEY }}
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v3
       with:
