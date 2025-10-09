@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404
+from django.views import defaults
 from django.template import loader
 from .models import TrackedServer
 from . import jobs
@@ -16,7 +17,7 @@ def check_server(request, ip):
         server = TrackedServer.objects.get(ip=ip)
         context = {"server": server, "admin": False}
     except TrackedServer.DoesNotExist:
-        raise Http404("No such server.")
+        return render(request, "servers/invalid_server.html")
     if(request.user.is_authenticated and request.user.is_staff):
         context["admin"] = True
     return render(request, "servers/check_server.html", context)
@@ -32,9 +33,9 @@ def force_update_server(request, ip):
             server.save()
             context = { "ip": ip, "update_result": result }
         except TrackedServer.DoesNotExist:
-            raise Http404("No such server.")
+            return render(request, "servers/invalid_server.html")
         return render(request, "servers/force_check.html", context)
-    print("Tried to access force_check without permission")
+    print(f"{request} Tried to access force_check without permission")
     raise Http404
 
 def enable_scheduler(request):
@@ -43,10 +44,7 @@ def enable_scheduler(request):
             jobs.start_jobs()
             context = { "message": "Activated scheduler" }
             return render(request, "servers/scheduler_message.html", context)
-        else:
-            raise Http404
-    else:
-        raise Http404
+    raise Http404
     
 
 def stop_scheduler(request):
