@@ -19,6 +19,7 @@ class TrackedServer(models.Model):
     mc_latency=models.FloatField("ping", default=-1)
     mc_favicon=models.TextField("image", default='-')
     last_check_result=models.BooleanField("last check worked",default=False)
+    label=models.CharField(blank=True, max_length=128, default="")
     def __str__(self):
         return f"{self.ip}"
     @staticmethod

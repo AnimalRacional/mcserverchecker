@@ -9,7 +9,13 @@
     {% if servers %}
         <ul>
             {% for server in servers %}
-                <li><a href="/checker/server/{{ server.ip }}">{{ server.ip }}</a></li>
+                <li><a href="/checker/server/{{ server.ip }}">
+                    {% if server.label %}
+                        {{ server.label }} ({{server.ip}})
+                    {% else %}
+                        {{ server.ip }}
+                    {% endif %}
+                </a></li>
             {% endfor %}
         </ul>
     {% else %}
