@@ -68,7 +68,7 @@ function applyCode(string, codes) {
             obfuscated = true;
         }
     }
-    if(!obfuscated) elem.innerHTML = string;
+    if(!obfuscated) elem.textContent = string;
     return elem;
 }
 function parseStyle(string) {
@@ -80,7 +80,7 @@ function parseStyle(string) {
         noCode,
         final = document.createDocumentFragment(),
         i;
-    string = string.replace(/\n|\\n/g, '<br>');
+    string = string.replace(/\n|\\n/g, '\r\n');
     for(i = 0, len = codes.length; i < len; i++) {
         indexes.push( string.indexOf(codes[i]) );
         string = string.replace(codes[i], '\x00\x00');
@@ -117,7 +117,7 @@ function initParser(input, output) {
     clearObfuscators();
     var input = document.getElementById(input),
         output = document.getElementById(output),
-        parsed = parseStyle( input.innerHTML );
+        parsed = parseStyle( input.textContent );
     output.innerHTML = '';
     output.appendChild(parsed);
 }
