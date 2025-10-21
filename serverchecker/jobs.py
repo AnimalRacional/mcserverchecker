@@ -36,9 +36,16 @@ def update_server(server: TrackedServer) -> bool:
         server.last_check_result = False
         server.last_checked = timezone.make_aware(datetime.datetime.now(), timezone.get_current_timezone())
         return False
+    except TimeoutError:
+        print(f'Connection to {server.ip} timed out!')
+        server.last_check_result = False
+        server.last_checked = timezone.make_aware(datetime.datetime.now(), timezone.get_current_timezone())
+        return False
     except Exception as e:
         print(f"Unhandled exception when checking {server.ip}")
         print(traceback.format_exc())
+        server.last_check_result = False
+        server.last_checked = timezone.make_aware(datetime.datetime.now(), timezone.get_current_timezone())
         return False
     
 
